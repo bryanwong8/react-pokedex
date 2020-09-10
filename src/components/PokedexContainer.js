@@ -1,9 +1,13 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import { useEffect, useState } from 'react';
+import { Row } from 'antd';
 import PokeCard from 'components/PokeCard';
 import styled from 'styled-components';
+import { Context } from 'Context';
 
 const PokdexContainer = () => {
+  // const { selectedPokemon, setSelectedPokemon } = useContext(Context);
   const StyledContainer = styled.div`
     margin: auto;
     width: 65%;
@@ -11,19 +15,13 @@ const PokdexContainer = () => {
   `;
 
   const [pokemonDetails, setDetails] = useState([]);
+  const [pokemonData, setPokemonData] = useState([]);
 
   const loadPokemon = async () => {
     const url = 'https://pokeapi.co/api/v2/pokemon?limit=151';
     const fetchPokemon = await fetch(url);
     const pokemonData = await fetchPokemon.json();
-
-    pokemonData.results.map(async pokemon => {
-      const fetchPokemon = await fetch(pokemon.url);
-      const detail = await fetchPokemon.json();
-      let details = [];
-      details.push(detail);
-      setDetails(prevDetails => [...prevDetails, ...details]);
-    });
+    setPokemonData(pokemonData.results);
   };
 
   useEffect(() => {
@@ -34,7 +32,11 @@ const PokdexContainer = () => {
 
   return (
     <StyledContainer className='site-card-wrapper'>
-      <PokeCard entries={pokemonDetails} />
+      <Row>
+        {pokemonData?.map(pokemon => (
+          <PokeCard key={pokemon.name} name={pokemon.name} url={pokemon.url} />
+        ))}
+      </Row>
     </StyledContainer>
   );
 };
