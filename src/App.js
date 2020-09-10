@@ -1,13 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import PokedexContainer from 'components/PokedexContainer';
+import styled from 'styled-components';
 
-function App() {
+const App = () => {
+  const StyledApp = styled.div`
+    text-align: center;
+  `;
   return (
-    <div className='App'>
+    <StyledApp>
       <PokedexContainer />
-    </div>
+    </StyledApp>
   );
 }
 
