@@ -1,35 +1,33 @@
 import * as React from 'react';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, Col } from 'antd';
 import styled from 'styled-components';
-import { Context } from 'Context';
+
+const StyledCard = styled(Card)`
+  margin: 30px;
+  width: 200px;
+  height: 200px;
+`;
 
 const PokeCard = props => {
-  const StyledCard = styled(Card)`
-    margin: 30px;
-    width: 200px;
-    height: 200px;
-  `;
-
-  // const { selectedPokemon, setSelectedPokemon } = useContext(Context);
-  const [selectedPokemon, setSelectedPokemon] = useState(null);
+  const [pokemonDetail, setPokemonDetail] = useState(null);
 
   const loadSelectedPokemon = async () => {
     const fetchPokemon = await fetch(props.url);
     const pokemonData = await fetchPokemon.json();
-    setSelectedPokemon(pokemonData);
+    setPokemonDetail(pokemonData);
   };
 
   useEffect(() => {
-    if (selectedPokemon === null) {
+    if (pokemonDetail === null) {
       loadSelectedPokemon();
     }
-  }, [selectedPokemon]);
+  }, [pokemonDetail]);
 
   return (
     <Col span={8}>
-      <StyledCard>
-        <img alt='' src={selectedPokemon?.sprites.front_default} />
+      <StyledCard onClick={() => props.changeSelected(pokemonDetail)}>
+        <img alt='' src={pokemonDetail?.sprites.front_default} />
         <p>{props.name}</p>
       </StyledCard>
     </Col>

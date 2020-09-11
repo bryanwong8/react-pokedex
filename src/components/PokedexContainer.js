@@ -1,20 +1,18 @@
 import * as React from 'react';
-import { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { Row } from 'antd';
-import PokeCard from 'components/PokeCard';
 import styled from 'styled-components';
-import { Context } from 'Context';
+import PokeCard from 'components/PokeCard';
+import PokeModal from 'components/PokeModal';
 
-const PokdexContainer = () => {
-  // const { selectedPokemon, setSelectedPokemon } = useContext(Context);
-  const StyledContainer = styled.div`
-    margin: auto;
-    width: 65%;
-    padding: 10px;
-  `;
+const StyledContainer = styled.div`
+  margin: auto;
+  width: 65%;
+  padding: 10px;
+`;
 
-  const [pokemonDetails, setDetails] = useState([]);
+const PokdexContainer = React.memo(() => {
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [pokemonData, setPokemonData] = useState([]);
 
   const loadPokemon = async () => {
@@ -25,20 +23,32 @@ const PokdexContainer = () => {
   };
 
   useEffect(() => {
-    if (pokemonDetails.length === 0) {
+    if (pokemonData.length === 0) {
       loadPokemon();
     }
-  }, [pokemonDetails]);
+  }, [pokemonData]);
 
+  console.log(selectedPokemon);
   return (
     <StyledContainer className='site-card-wrapper'>
+      {selectedPokemon !== null ? (
+        <PokeModal
+          pokemonDetail={selectedPokemon}
+          changeSelected={setSelectedPokemon}
+        />
+      ) : null}
       <Row>
         {pokemonData?.map(pokemon => (
-          <PokeCard key={pokemon.name} name={pokemon.name} url={pokemon.url} />
+          <PokeCard
+            key={pokemon.name}
+            name={pokemon.name}
+            url={pokemon.url}
+            changeSelected={setSelectedPokemon}
+          />
         ))}
       </Row>
     </StyledContainer>
   );
-};
+});
 
 export default PokdexContainer;
