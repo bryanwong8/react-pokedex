@@ -28,7 +28,6 @@ const PokdexContainer = React.memo(() => {
     }
   }, [pokemonData]);
 
-  console.log(selectedPokemon);
   return (
     <StyledContainer className='site-card-wrapper'>
       {selectedPokemon !== null ? (
