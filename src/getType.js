@@ -1,35 +1,37 @@
-const getTypeColor = type => {
+const getType = type => {
   switch (type) {
     case 'bug':
-      return '#92BC2C';
+      return '#A8B820';
     case 'dragon':
-      return '#0C69C8';
+      return '#7038F8';
     case 'electric':
-      return '#FFE981';
+      return '#F8D030';
     case 'fairy':
-      return '#EE90E6';
+      return '#EE99AC';
     case 'fighting':
-      return '#D3425F';
+      return '#C03028';
     case 'fire':
-      return '#FF555E';
+      return '#F08030';
     case 'flying':
-      return '#A1BBEC';
+      return '#A890F0';
     case 'ghost':
-      return '#5F6DBC';
+      return '#A292BC';
     case 'grass':
-      return '#8BF18B';
+      return '#52c41a';
     case 'ground':
-      return '#DA7C4D';
+      return '#927D44';
     case 'ice':
-      return '#75D0C1';
+      return '#98D8D8';
     case 'normal':
-      return '#DDDDDD';
+      return '#bfbfbf';
     case 'psychic':
-      return '#FFDBE9';
+      return '#F85888';
     case 'poison':
       return '#B763CF';
     case 'rock':
-      return '#C9BB8A';
+      return '#B8A038';
+    case 'steel':
+      return '#B8B8D0';
     case 'water':
       return '#83B2FF';
     default:
@@ -37,4 +39,4 @@ const getTypeColor = type => {
   }
 };
 
-export default getTypeColor;
+export default getType;
