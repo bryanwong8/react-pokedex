@@ -23,7 +23,7 @@ const getTypeColor = type => {
     case 'ice':
       return '#75D0C1';
     case 'normal':
-      return '#A0A29F';
+      return '#DDDDDD';
     case 'psychic':
       return '#FFDBE9';
     case 'poison':
