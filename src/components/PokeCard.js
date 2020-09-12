@@ -2,9 +2,12 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Button, Card, Col, Space } from 'antd';
 import styled from 'styled-components';
-import getTypeColor from 'getType';
+import getBackgroundType from 'getBackgroundType';
+import getType from 'getType';
 
 const StyledButton = styled(Button)`
+  color: white;
+  border: none;
   width: 100%;
   margin-top: 7px;
 `;
@@ -13,6 +16,10 @@ const StyledCard = styled(Card)`
   margin: 30px;
   height: 180px;
   border-radius: 27px;
+  :hover {
+    cursor: pointer;
+    float: top;
+	}
 
   .ant-card-body {
     padding: 20px;
@@ -55,7 +62,7 @@ const PokeCard = props => {
     <Col span={8}>
       <StyledCard
         style={{
-          backgroundColor: getTypeColor(pokemonDetail?.types[0].type.name)
+          backgroundColor: getBackgroundType(pokemonDetail?.types[0].type.name)
         }}
         onClick={() => props.changeSelected(pokemonDetail)}
       >
@@ -63,7 +70,11 @@ const PokeCard = props => {
           <div>
             <StyledTitle>{uppercaseWord(props.name)}</StyledTitle>
             {pokemonDetail?.types.map(typing => (
-              <StyledButton type='primary' shape='round' size='small'>
+              <StyledButton
+                style={{ backgroundColor: getType(typing.type.name) }}
+                shape='round'
+                size='small'
+              >
                 {uppercaseWord(typing.type.name)}
               </StyledButton>
             ))}
