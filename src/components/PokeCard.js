@@ -46,17 +46,17 @@ const PokeCard = props => {
     pokemonDetail?.id +
     '.svg';
 
-  const loadSelectedPokemon = async () => {
-    const fetchPokemon = await fetch(props.url);
-    const pokemonData = await fetchPokemon.json();
-    setPokemonDetail(pokemonData);
-  };
-
   useEffect(() => {
+    const loadSelectedPokemon = async () => {
+      const fetchPokemon = await fetch(props.url);
+      const pokemonData = await fetchPokemon.json();
+      setPokemonDetail(pokemonData);
+    };
+    
     if (pokemonDetail === null) {
       loadSelectedPokemon();
     }
-  }, [pokemonDetail]);
+  }, []);
 
   return (
     <Col span={8}>

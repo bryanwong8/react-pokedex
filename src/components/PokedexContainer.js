@@ -15,18 +15,18 @@ const PokdexContainer = React.memo(() => {
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [pokemonData, setPokemonData] = useState([]);
 
-  const loadPokemon = async () => {
-    const url = 'https://pokeapi.co/api/v2/pokemon?limit=151';
-    const fetchPokemon = await fetch(url);
-    const pokemonData = await fetchPokemon.json();
-    setPokemonData(pokemonData.results);
-  };
-
   useEffect(() => {
+    const loadPokemon = async () => {
+      const url = 'https://pokeapi.co/api/v2/pokemon?limit=151';
+      const fetchPokemon = await fetch(url);
+      const pokemonData = await fetchPokemon.json();
+      setPokemonData(pokemonData.results);
+    };
+
     if (pokemonData.length === 0) {
       loadPokemon();
     }
-  }, [pokemonData]);
+  }, []);
 
   return (
     <StyledContainer className='site-card-wrapper'>
