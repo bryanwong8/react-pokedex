@@ -32,6 +32,10 @@ const StyledImageContainer = styled.div`
 `;
 
 const StyledModal = styled(Modal)`
+  .ant-modal {
+    width: 300px;
+  }
+
   .ant-modal-body {
     padding: 0;
   }
@@ -47,6 +51,10 @@ const StyledProgress = styled(Progress)`
 const StyledStat = styled.span`
   position: absolute;
   left: 13em;
+`;
+
+const StyledStatName = styled.span`
+  color: #8c8c8c;
 `;
 
 const StyledTitle = styled.h1`
@@ -65,6 +73,16 @@ const PokeModal = props => {
     'https://raw.githubusercontent.com/jnovack/pokemon-svg/3c3ea26da58331d7202e7cdb1aab9b8347d8587f/svg/' +
     props.pokemonDetail.id +
     '.svg';
+
+  const calculateStatTotal = stats => {
+    let total = 0;
+
+    stats.map(stat => {
+      total += stat.base_stat;
+    });
+
+    return total;
+  };
 
   return (
     <StyledModal
@@ -105,7 +123,7 @@ const PokeModal = props => {
         <StyledFooter>
           {props.pokemonDetail.stats.map(stat => (
             <span>
-              <span>{uppercaseWord(stat.stat.name)}</span>
+              <StyledStatName>{uppercaseWord(stat.stat.name)}</StyledStatName>
               <StyledStat>{stat.base_stat}</StyledStat>
               <StyledProgress
                 percent={(stat.base_stat / 255) * 100}
@@ -114,6 +132,16 @@ const PokeModal = props => {
               <br />
             </span>
           ))}
+
+          <span>
+            <StyledStatName>Total</StyledStatName>
+            <StyledStat>{calculateStatTotal(props.pokemonDetail.stats)}</StyledStat>
+            <StyledProgress
+              percent={(calculateStatTotal(props.pokemonDetail.stats) / 800) * 100}
+              showInfo={false}
+            />
+            <br />
+          </span>
         </StyledFooter>
       </Layout>
     </StyledModal>
