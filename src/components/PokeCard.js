@@ -1,22 +1,14 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, Card, Col, Space } from 'antd';
+import { Card, Col, Space } from 'antd';
 import styled from 'styled-components';
 import { uppercaseWord } from 'helper/shared';
 import {
   loadSelectedPokemon,
   getBackgroundType,
-  getPokemonImage,
-  getType
+  getPokemonImage
 } from 'helper/pokemonHelpers';
-
-const StyledButton = styled(Button)`
-  background-color: ${props => props.typeName};
-  color: white;
-  border: none;
-  width: 100%;
-  margin-top: 7px;
-`;
+import PokeTypes from 'components/PokeTypes';
 
 const StyledCard = styled(Card)`
   background-color: ${props => props.typeName};
@@ -69,15 +61,7 @@ const PokeCard = props => {
         <Space align='start'>
           <div>
             <StyledTitle>{uppercaseWord(props.name)}</StyledTitle>
-            {pokemonDetail?.types.map(typing => (
-              <StyledButton
-                typeName={getType(typing.type.name)}
-                shape='round'
-                size='small'
-              >
-                {uppercaseWord(typing.type.name)}
-              </StyledButton>
-            ))}
+            <PokeTypes types={pokemonDetail?.types} width='100' />
           </div>
           <StyledImage alt='' src={getPokemonImage(pokemonDetail?.id)} />
         </Space>

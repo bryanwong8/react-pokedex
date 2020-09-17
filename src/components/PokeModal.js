@@ -1,21 +1,12 @@
 import * as React from 'react';
-import { Button, Layout, Modal, Progress } from 'antd';
+import { Layout, Modal } from 'antd';
 import styled from 'styled-components';
-import { calculateStatTotal, uppercaseWord } from 'helper/shared';
-import {
-  getBackgroundType,
-  getPokemonImage,
-  getType
-} from 'helper/pokemonHelpers';
+import { uppercaseWord } from 'helper/shared';
+import { getBackgroundType, getPokemonImage } from 'helper/pokemonHelpers';
+import PokeStats from 'components/PokeStats';
+import PokeTypes from 'components/PokeTypes';
 
 const { Footer, Content } = Layout;
-
-const StyledButton = styled(Button)`
-  color: white;
-  border: none;
-  width: 18%;
-  margin-right: 5px;
-`;
 
 const StyledContent = styled(Content)`
   padding: 28px;
@@ -43,22 +34,6 @@ const StyledModal = styled(Modal)`
   .ant-modal-body {
     padding: 0;
   }
-`;
-
-const StyledProgress = styled(Progress)`
-  margin-left: 5px;
-  width: 50%;
-  position: absolute;
-  right: 35px;
-`;
-
-const StyledStat = styled.span`
-  position: absolute;
-  left: 13em;
-`;
-
-const StyledStatName = styled.span`
-  color: #8c8c8c;
 `;
 
 const StyledTitle = styled.h1`
@@ -89,15 +64,7 @@ const PokeModal = props => {
           </StyledTitle>
 
           <span>
-            {props.pokemonDetail.types.map(typing => (
-              <StyledButton
-                style={{ backgroundColor: getType(typing.type.name) }}
-                shape='round'
-                size='small'
-              >
-                {uppercaseWord(typing.type.name)}
-              </StyledButton>
-            ))}
+            <PokeTypes types={props.pokemonDetail.types} width={'18'} />
           </span>
 
           <StyledImageContainer>
@@ -109,31 +76,7 @@ const PokeModal = props => {
         </StyledContent>
 
         <StyledFooter>
-          {props.pokemonDetail.stats.map(stat => (
-            <span>
-              <StyledStatName>{uppercaseWord(stat.stat.name)}</StyledStatName>
-              <StyledStat>{stat.base_stat}</StyledStat>
-              <StyledProgress
-                percent={(stat.base_stat / 255) * 100}
-                showInfo={false}
-              />
-              <br />
-            </span>
-          ))}
-
-          <span>
-            <StyledStatName>Total</StyledStatName>
-            <StyledStat>
-              {calculateStatTotal(props.pokemonDetail.stats)}
-            </StyledStat>
-            <StyledProgress
-              percent={
-                (calculateStatTotal(props.pokemonDetail.stats) / 800) * 100
-              }
-              showInfo={false}
-            />
-            <br />
-          </span>
+          <PokeStats stats={props.pokemonDetail.stats} />
         </StyledFooter>
       </Layout>
     </StyledModal>
