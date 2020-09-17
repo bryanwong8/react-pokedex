@@ -4,6 +4,7 @@ import { Row } from 'antd';
 import styled from 'styled-components';
 import PokeCard from 'components/PokeCard';
 import PokeModal from 'components/PokeModal';
+import { loadPokemon } from 'helper/pokemonHelpers';
 
 const StyledContainer = styled.div`
   margin: auto;
@@ -16,16 +17,16 @@ const PokdexContainer = React.memo(() => {
   const [pokemonData, setPokemonData] = useState([]);
 
   useEffect(() => {
-    const loadPokemon = async () => {
-      const url = 'https://pokeapi.co/api/v2/pokemon?limit=151';
-      const fetchPokemon = await fetch(url);
-      const pokemonData = await fetchPokemon.json();
-      setPokemonData(pokemonData.results);
+    const loadedPokemon = async () => {
+      try {
+        const apiResponse = await loadPokemon();
+        setPokemonData(apiResponse.results);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
-    if (pokemonData.length === 0) {
-      loadPokemon();
-    }
+    loadedPokemon();
   }, []);
 
   return (

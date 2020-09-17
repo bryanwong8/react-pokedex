@@ -2,10 +2,16 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Button, Card, Col, Space } from 'antd';
 import styled from 'styled-components';
-import getBackgroundType from 'getBackgroundType';
-import getType from 'getType';
+import { uppercaseWord } from 'helper/shared';
+import {
+  loadSelectedPokemon,
+  getBackgroundType,
+  getPokemonImage,
+  getType
+} from 'helper/pokemonHelpers';
 
 const StyledButton = styled(Button)`
+  background-color: ${props => props.typeName};
   color: white;
   border: none;
   width: 100%;
@@ -13,13 +19,16 @@ const StyledButton = styled(Button)`
 `;
 
 const StyledCard = styled(Card)`
+  background-color: ${props => props.typeName};
   margin: 30px;
   height: 180px;
   border-radius: 27px;
+  color: white;
+
   :hover {
     cursor: pointer;
     float: top;
-	}
+  }
 
   .ant-card-body {
     padding: 20px;
@@ -35,35 +44,26 @@ const StyledTitle = styled.h2`
   color: white;
 `;
 
-const uppercaseWord = word => {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-};
-
 const PokeCard = props => {
   const [pokemonDetail, setPokemonDetail] = useState(null);
-  const pokemonImage =
-    'https://raw.githubusercontent.com/jnovack/pokemon-svg/3c3ea26da58331d7202e7cdb1aab9b8347d8587f/svg/' +
-    pokemonDetail?.id +
-    '.svg';
 
   useEffect(() => {
-    const loadSelectedPokemon = async () => {
-      const fetchPokemon = await fetch(props.url);
-      const pokemonData = await fetchPokemon.json();
-      setPokemonDetail(pokemonData);
+    const selectedPokemon = async () => {
+      try {
+        const apiResponse = await loadSelectedPokemon(props.url);
+        setPokemonDetail(apiResponse);
+      } catch (err) {
+        console.error(err);
+      }
     };
-    
-    if (pokemonDetail === null) {
-      loadSelectedPokemon();
-    }
-  }, []);
+
+    selectedPokemon();
+  }, [props.url]);
 
   return (
     <Col span={8}>
       <StyledCard
-        style={{
-          backgroundColor: getBackgroundType(pokemonDetail?.types[0].type.name)
-        }}
+        typeName={getBackgroundType(pokemonDetail?.types[0].type.name)}
         onClick={() => props.changeSelected(pokemonDetail)}
       >
         <Space align='start'>
@@ -71,7 +71,7 @@ const PokeCard = props => {
             <StyledTitle>{uppercaseWord(props.name)}</StyledTitle>
             {pokemonDetail?.types.map(typing => (
               <StyledButton
-                style={{ backgroundColor: getType(typing.type.name) }}
+                typeName={getType(typing.type.name)}
                 shape='round'
                 size='small'
               >
@@ -79,7 +79,7 @@ const PokeCard = props => {
               </StyledButton>
             ))}
           </div>
-          <StyledImage alt='' src={pokemonImage} />
+          <StyledImage alt='' src={getPokemonImage(pokemonDetail?.id)} />
         </Space>
       </StyledCard>
     </Col>

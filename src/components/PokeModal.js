@@ -1,8 +1,12 @@
 import * as React from 'react';
 import { Button, Layout, Modal, Progress } from 'antd';
 import styled from 'styled-components';
-import getBackgroundType from 'getBackgroundType';
-import getType from 'getType';
+import { calculateStatTotal, uppercaseWord } from 'helper/shared';
+import {
+  getBackgroundType,
+  getPokemonImage,
+  getType
+} from 'helper/pokemonHelpers';
 
 const { Footer, Content } = Layout;
 
@@ -64,26 +68,7 @@ const StyledTitle = styled.h1`
   margin-bottom: 3px;
 `;
 
-const uppercaseWord = word => {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-};
-
 const PokeModal = props => {
-  const pokemonImage =
-    'https://raw.githubusercontent.com/jnovack/pokemon-svg/3c3ea26da58331d7202e7cdb1aab9b8347d8587f/svg/' +
-    props.pokemonDetail.id +
-    '.svg';
-
-  const calculateStatTotal = stats => {
-    let total = 0;
-
-    stats.map(stat => {
-      total += stat.base_stat;
-    });
-
-    return total;
-  };
-
   return (
     <StyledModal
       visible={props.pokemonDetail !== null}
@@ -116,7 +101,10 @@ const PokeModal = props => {
           </span>
 
           <StyledImageContainer>
-            <StyledImage alt='' src={pokemonImage} />
+            <StyledImage
+              alt=''
+              src={getPokemonImage(props.pokemonDetail?.id)}
+            />
           </StyledImageContainer>
         </StyledContent>
 
@@ -135,9 +123,13 @@ const PokeModal = props => {
 
           <span>
             <StyledStatName>Total</StyledStatName>
-            <StyledStat>{calculateStatTotal(props.pokemonDetail.stats)}</StyledStat>
+            <StyledStat>
+              {calculateStatTotal(props.pokemonDetail.stats)}
+            </StyledStat>
             <StyledProgress
-              percent={(calculateStatTotal(props.pokemonDetail.stats) / 800) * 100}
+              percent={
+                (calculateStatTotal(props.pokemonDetail.stats) / 800) * 100
+              }
               showInfo={false}
             />
             <br />
