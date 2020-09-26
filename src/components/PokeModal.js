@@ -26,6 +26,10 @@ const StyledImageContainer = styled.div`
   text-align: center;
 `;
 
+const StyledLayout = styled(Layout)`
+  background-color: ${props => props.typeName};
+`;
+
 const StyledModal = styled(Modal)`
   .ant-modal {
     width: 300px;
@@ -51,12 +55,8 @@ const PokeModal = props => {
       onCancel={() => props.changeSelected(null)}
       footer={null}
     >
-      <Layout
-        style={{
-          backgroundColor: getBackgroundType(
-            props.pokemonDetail?.types[0].type.name
-          )
-        }}
+      <StyledLayout
+        typeName={getBackgroundType(props.pokemonDetail?.types[0].type.name)}
       >
         <StyledContent>
           <StyledTitle>
@@ -78,7 +78,7 @@ const PokeModal = props => {
         <StyledFooter>
           <PokeStats stats={props.pokemonDetail.stats} />
         </StyledFooter>
-      </Layout>
+      </StyledLayout>
     </StyledModal>
   );
 };
